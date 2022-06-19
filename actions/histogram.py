@@ -56,13 +56,35 @@ def equalization(image):
     B = numpy.asarray(B)
 
     # FAÇA AS ALTERAÇÕES EM R, G E B
+    h_b, bin_b = numpy.histogram(B.flatten(), 256, [0, 256])
+    h_g, bin_g = numpy.histogram(G.flatten(), 256, [0, 256])
+    h_r, bin_r = numpy.histogram(R.flatten(), 256, [0, 256])
 
+    cdf_b = numpy.cumsum(h_b)  
+    cdf_g = numpy.cumsum(h_g)
+    cdf_r = numpy.cumsum(h_r)
+
+    cdf_m_b = numpy.ma.masked_equal(cdf_b,0)
+    cdf_m_b = (cdf_m_b - cdf_m_b.min())*255/(cdf_m_b.max()-cdf_m_b.min())
+    cdf_final_b = numpy.ma.filled(cdf_m_b,0).astype('uint8')
+  
+    cdf_m_g = numpy.ma.masked_equal(cdf_g,0)
+    cdf_m_g = (cdf_m_g - cdf_m_g.min())*255/(cdf_m_g.max()-cdf_m_g.min())
+    cdf_final_g = numpy.ma.filled(cdf_m_g,0).astype('uint8')
+
+    cdf_m_r = numpy.ma.masked_equal(cdf_r,0)
+    cdf_m_r = (cdf_m_r - cdf_m_r.min())*255/(cdf_m_r.max()-cdf_m_r.min())
+    cdf_final_r = numpy.ma.filled(cdf_m_r,0).astype('uint8')
+    
+    img_b = cdf_final_b[B]
+    img_g = cdf_final_g[G]
+    img_r = cdf_final_r[R]
     # END FAÇA AS ALTERAÇÕES EM R, G E B
 
     NPimage = numpy.zeros([PILimage.height, PILimage.width, 3], dtype=numpy.uint8)
-    NPimage[:, :, 0] = R
-    NPimage[:, :, 1] = G
-    NPimage[:, :, 2] = B
+    NPimage[:, :, 0] = img_r
+    NPimage[:, :, 1] = img_g
+    NPimage[:, :, 2] = img_b
   else:
     NPimage = numpy.asarray(PILimage.convert("L"))
 

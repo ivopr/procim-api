@@ -1,7 +1,7 @@
 from base64 import b64encode
 from io import BytesIO, StringIO
 from fastapi import FastAPI, File, Request, UploadFile, Response
-from actions.histogram import expansion
+from actions.histogram import equalization, expansion
 from actions.negative import negative
 
 from actions.yiq import rgb_to_yiq, yiq_to_rgb
@@ -49,6 +49,16 @@ async def neg(file: UploadFile = File(...)):
 @app.post("/expansion")
 async def histexp(file: UploadFile = File(...)):
     ret = expansion(await file.read())
+    bytes_image = BytesIO()
+    ret.save(bytes_image, format="PNG")
+
+    img_str = b64encode(bytes_image.getvalue())
+
+    return img_str
+
+@app.post("/equalization")
+async def histequ(file: UploadFile = File(...)):
+    ret = equalization(await file.read())
     bytes_image = BytesIO()
     ret.save(bytes_image, format="PNG")
 
