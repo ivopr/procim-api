@@ -1,3 +1,4 @@
+from base64 import b64encode
 from io import BytesIO
 from PIL import Image
 import numpy

@@ -1,3 +1,4 @@
+from base64 import b64encode
 from io import BytesIO, StringIO
 from fastapi import FastAPI, File, Request, UploadFile, Response
 
@@ -15,7 +16,9 @@ async def RGBtoYIQ(file: UploadFile = File(...)):
     bytes_image = BytesIO()
     ret.save(bytes_image, format="PNG")
 
-    return Response(content = bytes_image.getvalue(), media_type="image/png")
+    img_str = b64encode(bytes_image.getvalue())
+
+    return img_str
 
 @app.post("/yiq-rgb")
 async def YIQtoRGB(file: UploadFile = File(...)):
@@ -23,4 +26,6 @@ async def YIQtoRGB(file: UploadFile = File(...)):
     bytes_image = BytesIO()
     ret.save(bytes_image, format="PNG")
 
-    return Response(content = bytes_image.getvalue(), media_type="image/png")
+    img_str = b64encode(bytes_image.getvalue())
+
+    return img_str
