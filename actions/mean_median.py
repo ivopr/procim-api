@@ -12,7 +12,7 @@ def mean(image, n):
     B = numpy.asarray(B)
 
     # FAÇA AS ALTERAÇÕES EM R, G E B
-
+    
     # END FAÇA AS ALTERAÇÕES EM R, G E B
 
     NPimage = numpy.zeros([PILimage.height, PILimage.width, 3], dtype=numpy.uint8)
