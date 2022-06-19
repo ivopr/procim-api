@@ -26,8 +26,8 @@ def mean(image, n):
 
     NPimage = numpy.zeros([PILimage.height, PILimage.width, 3], dtype=numpy.uint8)
     NPimage[:, :, 0] = newR[n:newR.shape[0]-n,n:newR.shape[1]-n]
-    NPimage[:, :, 1] = newG[n:newR.shape[0]-n,n:newR.shape[1]-n]
-    NPimage[:, :, 2] = newB[n:newR.shape[0]-n,n:newR.shape[1]-n]
+    NPimage[:, :, 1] = newG[n:newG.shape[0]-n,n:newG.shape[1]-n]
+    NPimage[:, :, 2] = newB[n:newB.shape[0]-n,n:newB.shape[1]-n]
   else:
     NPimage = numpy.asarray(PILimage.convert("L"))
 
