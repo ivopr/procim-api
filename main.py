@@ -86,7 +86,7 @@ async def mean_filter(file: UploadFile = File(...), n: int = Form(3)):
     ret.save(bytes_image, format="PNG")
 
     img_str = b64encode(bytes_image.getvalue())
-    # return Response(content = bytes_image.getvalue(), media_type="image/png")
+    return Response(content = bytes_image.getvalue(), media_type="image/png")
 
     return img_str
 
