@@ -44,29 +44,30 @@ def mean(image, n):
   PILimage = Image.fromarray(numpy.uint8(NPimage))
   return PILimage
 
-def median(image):
-  PILimage = Image.open(BytesIO(image))
-  if (PILimage.mode == "RGB"):
-    (R, G, B) = PILimage.split()
-    R = numpy.asarray(R)
-    G = numpy.asarray(G)
-    B = numpy.asarray(B)
+def median(image, filter_size):
+  img = Image.open(BytesIO(image)).convert("L")
+  data = numpy.array(img)
+  temp = []
+  indexer = filter_size // 2
+  data_final = []
+  data_final = numpy.zeros((len(data),len(data[0])))
+  for i in range(len(data)):
 
-    # FAÇA AS ALTERAÇÕES EM R, G E B
+      for j in range(len(data[0])):
 
-    # END FAÇA AS ALTERAÇÕES EM R, G E B
+          for z in range(filter_size):
+              if i + z - indexer < 0 or i + z - indexer > len(data) - 1:
+                  for c in range(filter_size):
+                      temp.append(0)
+              else:
+                  if j + z - indexer < 0 or j + indexer > len(data[0]) - 1:
+                      temp.append(0)
+                  else:
+                      for k in range(filter_size):
+                          temp.append(data[i + z - indexer][j + k - indexer])
 
-    NPimage = numpy.zeros([PILimage.height, PILimage.width, 3], dtype=numpy.uint8)
-    NPimage[:, :, 0] = R
-    NPimage[:, :, 1] = G
-    NPimage[:, :, 2] = B
-  else:
-    NPimage = numpy.asarray(PILimage.convert("L"))
-
-    # FAÇA AS ALTERAÇÕES EM NPimage
-
-    # END FAÇA AS ALTERAÇÕES EM NPimage
-
-  # Transforma o array numpy (que é uma matriz) novamente em uma imagem
-  PILimage = Image.fromarray(numpy.uint8(NPimage))
-  return PILimage
+          temp.sort()
+          data_final[i][j] = temp[len(temp) // 2]
+          temp = []
+  final_img = Image.fromarray(numpy.uint8(data_final))
+  return final_img
