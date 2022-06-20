@@ -70,4 +70,4 @@ def median(image, filter_size):
           data_final[i][j] = temp[len(temp) // 2]
           temp = []
   final_img = Image.fromarray(numpy.uint8(data_final))
-  return final_img
+  return final_img 
