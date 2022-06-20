@@ -1,6 +1,7 @@
 from base64 import b64encode
 from io import BytesIO, StringIO
 from fastapi import FastAPI, File, Form, Request, UploadFile, Response
+import uvicorn
 from actions.histogram import equalization, expansion
 from actions.mean_median import mean, median
 from actions.negative import negative
@@ -100,3 +101,6 @@ async def median_filter(file: UploadFile = File(...), n: int = Form(3)):
     # return Response(content = bytes_image.getvalue(), media_type="image/png")
 
     return img_str
+
+if __name__ == "__main__":
+    uvicorn.run('main:app', host="0.0.0.0", port=8080, reload=False)
