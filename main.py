@@ -126,7 +126,3 @@ async def conv_filter(file: UploadFile = File(...)):
     img_str = b64encode(bytes_image.getvalue())
     return img_str
     #return Response(content = bytes_image.getvalue(), media_type="image/png")
-
-if __name__ == "__main__":
-    uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=False)
-
