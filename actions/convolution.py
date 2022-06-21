@@ -7,7 +7,6 @@ import numpy
 # imagem f e, via interface gráfica ou arquivo com formatação específica, 
 # os valores dos elementos de h (n x m). Considere nulos os valores 
 # indefinidos de fi,j e hi,j.
-
 def convolve(image):
   PILimage = Image.open(BytesIO(image))
   X = numpy.asarray(PILimage.convert("L"))
