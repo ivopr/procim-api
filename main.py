@@ -105,17 +105,6 @@ async def median_filter(file: UploadFile = File(...), n: int = Form(3)):
 
     return img_str
 
-@app.post("/convolution")
-async def convolve(file: UploadFile = File(...), n: int = Form(3), mask: str = Form()):
-    ret = convolution(await file.read(), n)
-    bytes_image = BytesIO()
-    ret.save(bytes_image, format="PNG")
-
-    img_str = b64encode(bytes_image.getvalue())
-    # return Response(content = bytes_image.getvalue(), media_type="image/png")
-
-    return img_str
-
 @app.post("/contrast")
 async def contrast(file: UploadFile = File(...), n: int = Form(3), c: int = Form(1)):
     ret = adaptive_contrast(await file.read(), c, n)
@@ -128,14 +117,15 @@ async def contrast(file: UploadFile = File(...), n: int = Form(3), c: int = Form
     return img_str
 
 
-@app.post("/conv")
+@app.post("/convolution")
 async def conv_filter(file: UploadFile = File(...)):
     ret = convolve(await file.read())
     bytes_image = BytesIO()
     ret.save(bytes_image, format="PNG")
 
     img_str = b64encode(bytes_image.getvalue())
-    return Response(content = bytes_image.getvalue(), media_type="image/png")
+    return img_str
+    #return Response(content = bytes_image.getvalue(), media_type="image/png")
 
 if __name__ == "__main__":
     uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=False)
