@@ -7,7 +7,7 @@ import numpy
 # imagem f e, via interface gráfica ou arquivo com formatação específica, 
 # os valores dos elementos de h (n x m). Considere nulos os valores 
 # indefinidos de fi,j e hi,j.
-def convolution(image):
+def convolution(image, offset, mask):
   PILimage = Image.open(BytesIO(image))
   if (PILimage.mode == "RGB"):
     (R, G, B) = PILimage.split()

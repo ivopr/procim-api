@@ -2,6 +2,8 @@ from base64 import b64encode
 from io import BytesIO, StringIO
 from fastapi import FastAPI, File, Form, Request, UploadFile, Response
 import uvicorn
+from actions.adaptive_contrast import adaptive_contrast
+from actions.convolution import convolution
 from actions.histogram import equalization, expansion
 from actions.mean_median import mean, median
 from actions.negative import negative
@@ -102,5 +104,27 @@ async def median_filter(file: UploadFile = File(...), n: int = Form(3)):
 
     return img_str
 
+@app.post("/convolution")
+async def convolve(file: UploadFile = File(...), n: int = Form(3), mask: str = Form()):
+    ret = convolution(await file.read(), n)
+    bytes_image = BytesIO()
+    ret.save(bytes_image, format="PNG")
+
+    img_str = b64encode(bytes_image.getvalue())
+    # return Response(content = bytes_image.getvalue(), media_type="image/png")
+
+    return img_str
+
+@app.post("/contrast")
+async def contrast(file: UploadFile = File(...), n: int = Form(3), c: int = Form(1)):
+    ret = adaptive_contrast(await file.read(), c, n)
+    bytes_image = BytesIO()
+    ret.save(bytes_image, format="PNG")
+
+    img_str = b64encode(bytes_image.getvalue())
+    # return Response(content = bytes_image.getvalue(), media_type="image/png")
+
+    return img_str
+
 if __name__ == "__main__":
-    uvicorn.run('main:app', host="0.0.0.0", port=8080, reload=False)
+    uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=False)
