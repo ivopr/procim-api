@@ -8,6 +8,7 @@ from actions.histogram import equalization, expansion
 from actions.mean_median import mean, median
 from actions.negative import negative
 from actions.sobel_gradient import sobel_gradient
+from actions.convolution import convolve
 
 from actions.yiq import rgb_to_yiq, yiq_to_rgb
 
@@ -126,5 +127,16 @@ async def contrast(file: UploadFile = File(...), n: int = Form(3), c: int = Form
 
     return img_str
 
+
+@app.post("/conv")
+async def conv_filter(file: UploadFile = File(...)):
+    ret = convolve(await file.read())
+    bytes_image = BytesIO()
+    ret.save(bytes_image, format="PNG")
+
+    img_str = b64encode(bytes_image.getvalue())
+    return Response(content = bytes_image.getvalue(), media_type="image/png")
+
 if __name__ == "__main__":
     uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=False)
+
