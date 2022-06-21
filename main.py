@@ -3,7 +3,6 @@ from io import BytesIO, StringIO
 from fastapi import FastAPI, File, Form, Request, UploadFile, Response
 import uvicorn
 from actions.adaptive_contrast import adaptive_contrast
-from actions.convolution import convolution
 from actions.histogram import equalization, expansion
 from actions.mean_median import mean, median
 from actions.negative import negative
